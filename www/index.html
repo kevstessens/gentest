@@ -37,7 +37,7 @@
     <link rel="stylesheet" href="css/app.css"/>
   </head>
 
-  <body ng-app="starterApp" layout="row">
+  <body ng-app="starterApp" layout="row" ng-controller="MainCtrl as mainCtrl">
 
   <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2"
                 md-component-id="left"
@@ -87,15 +87,18 @@
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="barcodescanner.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
-    <script type="text/javascript">
-        app.initialize();
-    </script>
+  
 
 
     <script type="text/javascript">
 
-          angular
-              .module('starterApp', ['ngMaterial']);
+          angular.module('starterApp', ['ngMaterial'])
+          .controller('MainCtrl', function () {
+              app.initialize();
+
+    
+          });
+
     </script>
    
 
