@@ -128,3 +128,9 @@ span.name {
   font-size:1.1em;
   padding-left:5px;
 }
+
+i {
+  position: absolute;
+  top: 30%;
+  left: 0.6em;
+}

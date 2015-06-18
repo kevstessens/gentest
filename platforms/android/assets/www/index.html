@@ -35,9 +35,10 @@
     <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
     <link rel="stylesheet" href="css/angular-material.css"/>
     <link rel="stylesheet" href="css/app.css"/>
+    <link rel="stylesheet" href="components/fontawesome/css/font-awesome.min.css"/>
   </head>
 
-  <body ng-app="starterApp" layout="row">
+  <body ng-app="starterApp" layout="row" ng-controller="MainCtrl as mainCtrl">
 
   <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2"
                 md-component-id="left"
@@ -49,7 +50,7 @@
     <md-list>
       <md-list-item>
           <md-button id="scan">
-           <md-icon md-svg-icon="css/svg/share.svg" class="avatar"></md-icon>
+           <div class="avatar"><i class="fa fa-barcode" style="font-size: 4em"></i></div>
             SCAN
           </md-button>
                 </md-list-item>
@@ -57,7 +58,7 @@
 
             <md-button id="encode">
            <md-icon md-svg-icon="css/svg/share.svg" class="avatar"></md-icon>
-            ENCODE
+            SIGNATURE
           </md-button>
 
       </md-list-item>
@@ -76,7 +77,14 @@
     </md-toolbar>
 
     <md-content flex id="content">
-       
+
+      <canvas ng-signature-pad="signature" height="400" width="800"></canvas>
+       <md-button ng-click="mainCtrl.clearCanvas(signature)">
+            Clear
+      </md-button>
+       <md-button ng-click="mainCtrl.downLoadImage(signature)">
+              Save Signature
+      </md-button>
     </md-content>
 
   </div>
@@ -86,16 +94,28 @@
     <script type="text/javascript" src="js/angular-material/angular-material.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="barcodescanner.js"></script>
+    <script type="text/javascript" src="components/signature_pad/signature_pad.min.js"></script>
+    <script type="text/javascript" src="components/ng-signature-pad/dist/ng-signature-pad.min.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
+
     <script type="text/javascript">
 
-          angular
-              .module('starterApp', ['ngMaterial']){
-                app.initialize();
-              };
+          angular.module('starterApp', ['ngMaterial', 'ngSignaturePad'])
+          .controller('MainCtrl', function () {
+              app.initialize();  
+
+              var self = this;
+
+              self.clearCanvas = function(sig){
+                sig.clear();
+              };  
+
+              self.downLoadImage = function(sig){
+                window.open(sig.toDataURL());
+              }
+          });
+
     </script>
    
-
-
   </body>
 </html>

@@ -1,0 +1,17 @@
+{
+  "name": "genMobile",
+  "version": "0.0.0",
+  "homepage": "https://github.com/kevstessens/gentest",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ng-signature-pad": "*",
+    "fontawesome": "~4.3.0"
+  }
+}
