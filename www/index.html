@@ -100,9 +100,15 @@
     </md-content>
 
     <md-content flex id="cart_content">
-
-      LELELELE
-    </md-content>
+      <md-list>
+        <md-list-item ng-repeat="product in mainCtrl.products">
+            <md-button ng-click="MainCtrl.selectProduct(product)">
+              <img ng-src="{{product.img}}" class="thumb">
+              {{product.name}}
+            </md-button>
+        </md-list-item>
+      </md-list>
+      </md-content>
   </div>
    <script src="js/angular/angular.js"></script>
     <script src="js/angular-animate/angular-animate.js"></script>
@@ -118,9 +124,23 @@
 
           angular.module('starterApp', ['ngMaterial', 'ngSignaturePad'])
           .controller('MainCtrl', function () {
+
               app.initialize();
 
               var self = this;
+
+              self.products = [
+              {
+                name: '208.312 G - TV LED Sony 79 " 4K Ultra HD XBR79X905B',
+                unix: '208312',
+                img: 'http://genesis.garba.com.ar/sg/resource?sha=2391841c750665548651fbd20b6177c2fc5223c303a0258433934b8dc375c7a5&filename=208312_1.jpg'
+              },
+              {
+                name: '202.060-3 G - iMac 27 " ME088LE/A Intel Core i5',
+                unix: '517151',
+                img: 'http://genesis.garba.com.ar/sg/resource?sha=fead2224a393d975769ffc7917a2f7b68bf0246e8a5898694bf9cc3e3963f037&filename=202060.jpg'
+              }
+              ];
 
               self.clearCanvas = function(sig){
                 sig.clear();
