@@ -29,7 +29,8 @@ md-list .md-button {
   width: 100%;
 }
   md-list .md-button.selected {
-    color: #03a9f4;
+    color: #3F51B5;
+    background-color: rgba(133, 133, 135, 0.1);
   }
 
   md-sidenav  md-list {
@@ -119,6 +120,21 @@ md-toolbar h1 {
 }
 
 
+.thumb {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  display: inline-block;
+  overflow: hidden;
+  margin: 0px;
+  vertical-align: middle;
+  zoom:0.70;
+  transform: translateZ(0);
+  -webkit-transform: scale(0.70);
+  -moz-transform:scale(0.70);
+}
+
+
 md-bottom-sheet  md-icon {
   margin-right:20px;
 }
@@ -131,6 +147,12 @@ span.name {
 
 i {
   position: absolute;
-  top: 30%;
-  left: 0.6em;
+  top: 22%;
+  left: 0.25em;
+}
+
+canvas {
+  border: solid 1px;
+  display: block;
+  margin:auto;
 }

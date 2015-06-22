@@ -29,7 +29,8 @@ md-list .md-button {
   width: 100%;
 }
   md-list .md-button.selected {
-    color: #03a9f4;
+    color: #3F51B5;
+    background-color: rgba(133, 133, 135, 0.1);
   }
 
   md-sidenav  md-list {

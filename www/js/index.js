@@ -27,7 +27,7 @@ var app = {
     // `load`, `deviceready`, `offline`, and `online`.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
-        document.getElementById('scan').addEventListener('click', this.scan, false);
+        // document.getElementById('scan').addEventListener('click', this.scan, false);
         document.getElementById('cart').addEventListener('click', this.openCart, false);
         document.getElementById('signature').addEventListener('click', this.openSignature, false);
     },
@@ -40,34 +40,46 @@ var app = {
         app.receivedEvent('deviceready');
     },
 
-    scan: function() {
-        console.log('scanning');
-
-        var scanner = cordova.require("cordova/plugin/BarcodeScanner");
-
-        scanner.scan( function (result) {
-
-            alert("We got a barcode\n" +
-            "Result: " + result.text + "\n" +
-            "Format: " + result.format + "\n" +
-            "Cancelled: " + result.cancelled);
-
-           console.log("Scanner result: \n" +
-                "text: " + result.text + "\n" +
-                "format: " + result.format + "\n" +
-                "cancelled: " + result.cancelled + "\n");
-            document.getElementById("info").innerHTML = result.text;
-            console.log(result);
-            /*
-            if (args.format == "QR_CODE") {
-                window.plugins.childBrowser.showWebPage(args.text, { showLocationBar: false });
-            }
-            */
-
-        }, function (error) {
-            console.log("Scanning failed: ", error);
-        } );
-    },
+    // scan: function() {
+    //     console.log('scanning');
+    //
+    //     var scanner = cordova.require("cordova/plugin/BarcodeScanner");
+    //
+    //
+    //     scanner.scan( function (result) {
+    //
+    //
+    //         if(result.text == "kevin"){
+    //           selected_product = null;
+    //           document.getElementById('modal-btn').click();
+    //         };
+    //         document.getElementById("scan").setAttribute('class', 'md-button md-default-theme');
+    //         document.getElementById("cart").setAttribute('class', 'selected md-button md-default-theme');
+    //         document.getElementById("signature").setAttribute('class', 'md-button md-default-theme');
+    //         document.getElementById("cart_content").setAttribute('style', 'display:block;');
+    //         document.getElementById("signature_content").setAttribute('style', 'display:none;');
+    //
+    //         alert("We got a barcode\n" +
+    //         "Result: " + result.text + "\n" +
+    //         "Format: " + result.format + "\n" +
+    //         "Cancelled: " + result.cancelled);
+    //
+    //        console.log("Scanner result: \n" +
+    //             "text: " + result.text + "\n" +
+    //             "format: " + result.format + "\n" +
+    //             "cancelled: " + result.cancelled + "\n");
+    //         document.getElementById("info").innerHTML = result.text;
+    //         console.log(result);
+    //         /*
+    //         if (args.format == "QR_CODE") {
+    //             window.plugins.childBrowser.showWebPage(args.text, { showLocationBar: false });
+    //         }
+    //         */
+    //
+    //     }, function (error) {
+    //         console.log("Scanning failed: ", error);
+    //     } );
+    // },
     openSignature: function() {
       document.getElementById("scan").setAttribute('class', 'md-button md-default-theme');
       document.getElementById("cart").setAttribute('class', 'md-button md-default-theme');

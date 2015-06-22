@@ -23,7 +23,7 @@
 <!DOCTYPE html>
 <html lang="en" >
   <head>
-    <title>TekGenesis</title>
+    <title>Genesis</title>
      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
@@ -35,6 +35,7 @@
     <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
     <link rel="stylesheet" href="css/angular-material.css"/>
     <link rel="stylesheet" href="css/app.css"/>
+    <link rel="stylesheet" href="css/dialog.css"/>
     <link rel="stylesheet" href="components/fontawesome/css/font-awesome.min.css"/>
   </head>
 
@@ -44,21 +45,31 @@
                 md-component-id="left"
                 md-is-locked-open="$mdMedia('gt-sm')">
 
+
+
     <md-toolbar class="md-whiteframe-z1">
       <h1>Menu</h1>
     </md-toolbar>
     <md-list>
-      <md-list-item>
-          <md-button id="scan">
-           <div class="avatar"><i class="fa fa-barcode" style="font-size: 4em"></i></div>
-            SCAN
-          </md-button>
-                </md-list-item>
-      <md-list-item>
 
-            <md-button id="encode">
-           <md-icon md-svg-icon="css/svg/share.svg" class="avatar"></md-icon>
-            SIGNATURE
+      <md-list-item>
+          <md-button id="cart" class="selected">
+           <div class="avatar"><i class="fa fa-shopping-cart" style="font-size: 6em"></i></div>
+            Carrito
+          </md-button>
+      </md-list-item>
+
+      <md-list-item>
+          <md-button id="scan" class="">
+           <div class="avatar"><i class="fa fa-barcode" style="font-size: 6em"></i></div>
+            Escaner
+          </md-button>
+      </md-list-item>
+
+      <md-list-item>
+        <md-button id="signature" class="">
+            <div class="avatar"><i class="fa fa-pencil" style="font-size: 6em"></i></div>
+            Firma
           </md-button>
 
       </md-list-item>
@@ -70,52 +81,109 @@
   <div flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z2">
 
     <md-toolbar layout="row" class="md-whiteframe-z1">
-      <md-button class="menu" hide-gt-sm ng-click="ul.toggleList()" aria-label="Show User List">
-        <md-icon md-svg-icon="css/svg/menu.svg" ></md-icon>
+      <md-button class="menu" hide-gt-sm aria-label="Show menu">
+        <i class="fa fa-bars" style="font-size: 2em; padding-left:22px;"></i>
       </md-button>
-      <h1>TekGenesis Mobile</h1>
+      <h1 style="font-size: 15px;"><img src="img/genesis.png" height="45px" > Mobile</h1>
     </md-toolbar>
 
-    <md-content flex id="content">
 
+    <md-content flex id="signature_content" style="display: none;">
+      <div class="signature-container">
       <canvas ng-signature-pad="signature" height="400" width="800"></canvas>
+      <div class="signature-buttons">
        <md-button ng-click="mainCtrl.clearCanvas(signature)">
             Clear
       </md-button>
        <md-button ng-click="mainCtrl.downLoadImage(signature)">
               Save Signature
       </md-button>
+    </div>
+  </div>
     </md-content>
 
+
+    <md-content flex id="cart_content">
+      <a href="" data-modal="#modal" class="modal__trigger" id="modal-btn"></a>
+
+      <md-list>
+        <md-list-item ng-repeat="product in mainCtrl.products">
+            <md-button ng-click="mainCtrl.showProduct(product)">
+              <img ng-src="{{product.img}}" class="thumb">
+              {{product.name}}
+            </md-button>
+        </md-list-item>
+      </md-list>
+
+      <!-- Modal -->
+      <div id="modal" class="modal modal__bg" role="dialog" aria-hidden="true">
+        <div class="modal__dialog">
+          <div class="modal__content">
+            <h1>{{mainCtrl.selected_product.name}}</h1>
+            <p>{{mainCtrl.selected_product.descrpition}}</p>
+            <img ng-src="{{mainCtrl.selected_product.img}}">
+            <!-- modal close button -->
+            <a href="" class="modal__close demo-close" style="display: none;">
+              <svg class="" viewBox="0 0 24 24"><path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/><path d="M0 0h24v24h-24z" fill="none"/></svg>
+            </a>
+
+          </div>
+        </div>
+      </div>
+
+      </md-content>
   </div>
-   <script src="js/angular/angular.js"></script>
+  <script src="js/angular/angular.js"></script>
     <script src="js/angular-animate/angular-animate.js"></script>
     <script src="js/angular-aria/angular-aria.js"></script>
     <script type="text/javascript" src="js/angular-material/angular-material.js"></script>
+    <script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="barcodescanner.js"></script>
     <script type="text/javascript" src="components/signature_pad/signature_pad.min.js"></script>
     <script type="text/javascript" src="components/ng-signature-pad/dist/ng-signature-pad.min.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
 
+
     <script type="text/javascript">
 
           angular.module('starterApp', ['ngMaterial', 'ngSignaturePad'])
           .controller('MainCtrl', function () {
-              app.initialize();  
+
+              app.initialize();
 
               var self = this;
 
+              self.products = [
+              {
+                name: '208.312 G - TV LED Sony 79 " 4K Ultra HD XBR79X905B',
+                unix: '208312',
+                img: 'http://genesis.garba.com.ar/sg/resource?sha=2391841c750665548651fbd20b6177c2fc5223c303a0258433934b8dc375c7a5&filename=208312_1.jpg'
+              },
+              {
+                name: '202.060-3 G - iMac 27 " ME088LE/A Intel Core i5',
+                unix: '517151',
+                img: 'http://genesis.garba.com.ar/sg/resource?sha=fead2224a393d975769ffc7917a2f7b68bf0246e8a5898694bf9cc3e3963f037&filename=202060.jpg'
+              }
+              ];
+
+              self.selected_product = self.products[0];
+
               self.clearCanvas = function(sig){
                 sig.clear();
-              };  
+              };
 
               self.downLoadImage = function(sig){
                 window.open(sig.toDataURL());
               }
+
+              self.showProduct = function(product){
+                self.selected_product = product;
+                document.getElementById('modal-btn').click();
+              }
           });
 
     </script>
-   
+
   </body>
 </html>

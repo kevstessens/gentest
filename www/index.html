@@ -35,6 +35,7 @@
     <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
     <link rel="stylesheet" href="css/angular-material.css"/>
     <link rel="stylesheet" href="css/app.css"/>
+    <link rel="stylesheet" href="css/dialog.css"/>
     <link rel="stylesheet" href="components/fontawesome/css/font-awesome.min.css"/>
   </head>
 
@@ -43,6 +44,8 @@
   <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2"
                 md-component-id="left"
                 md-is-locked-open="$mdMedia('gt-sm')">
+
+
 
     <md-toolbar class="md-whiteframe-z1">
       <h1>Menu</h1>
@@ -57,7 +60,7 @@
       </md-list-item>
 
       <md-list-item>
-          <md-button id="scan" class="">
+          <md-button ng-click="mainCtrl.scan()" class="">
            <div class="avatar"><i class="fa fa-barcode" style="font-size: 6em"></i></div>
             Escaner
           </md-button>
@@ -99,26 +102,46 @@
   </div>
     </md-content>
 
+
     <md-content flex id="cart_content">
+      <a href="" data-modal="#modal" class="modal__trigger" id="modal-btn"></a>
+
       <md-list>
         <md-list-item ng-repeat="product in mainCtrl.products">
-            <md-button ng-click="MainCtrl.selectProduct(product)">
+            <md-button ng-click="mainCtrl.showProduct(product)">
               <img ng-src="{{product.img}}" class="thumb">
               {{product.name}}
             </md-button>
         </md-list-item>
       </md-list>
+
+      <!-- Modal -->
+      <div id="modal" class="modal modal__bg" role="dialog" aria-hidden="true">
+        <div class="modal__dialog">
+          <div class="modal__content">
+            <h1>{{mainCtrl.selected_product.name}}</h1>
+            <p>{{mainCtrl.selected_product.descrpition}}</p>
+            <img ng-src="{{mainCtrl.selected_product.img}}">
+            <!-- modal close button -->
+            <a href="" class="modal__close demo-close" style="display: none;">
+              <svg class="" viewBox="0 0 24 24"><path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/><path d="M0 0h24v24h-24z" fill="none"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
       </md-content>
   </div>
-   <script src="js/angular/angular.js"></script>
+  <script src="js/angular/angular.js"></script>
     <script src="js/angular-animate/angular-animate.js"></script>
     <script src="js/angular-aria/angular-aria.js"></script>
     <script type="text/javascript" src="js/angular-material/angular-material.js"></script>
+    <script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="barcodescanner.js"></script>
     <script type="text/javascript" src="components/signature_pad/signature_pad.min.js"></script>
     <script type="text/javascript" src="components/ng-signature-pad/dist/ng-signature-pad.min.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
+
 
     <script type="text/javascript">
 
@@ -142,16 +165,69 @@
               }
               ];
 
+              self.selected_product = self.products[0];
+
               self.clearCanvas = function(sig){
                 sig.clear();
               };
 
               self.downLoadImage = function(sig){
                 window.open(sig.toDataURL());
+              };
+
+              self.showProduct = function(product){
+                self.selected_product = product;
+                document.getElementById('modal-btn').click();
+              };
+              self.scan =function(){
+                console.log('scanning');
+
+                var scanner = cordova.require("cordova/plugin/BarcodeScanner");
+
+
+                scanner.scan( function (result) {
+
+
+                    if(result.text == "kevin"){
+                      self.selected_product = null;
+                      document.getElementById('modal-btn').click();
+                    };
+                    document.getElementById("scan").setAttribute('class', 'md-button md-default-theme');
+                    document.getElementById("cart").setAttribute('class', 'selected md-button md-default-theme');
+                    document.getElementById("signature").setAttribute('class', 'md-button md-default-theme');
+                    document.getElementById("cart_content").setAttribute('style', 'display:block;');
+                    document.getElementById("signature_content").setAttribute('style', 'display:none;');
+
+                  //   alert("We got a barcode\n" +
+                  //   "Result: " + result.text + "\n" +
+                  //   "Format: " + result.format + "\n" +
+                  //   "Cancelled: " + result.cancelled);
+                   //
+                  //  console.log("Scanner result: \n" +
+                  //       "text: " + result.text + "\n" +
+                  //       "format: " + result.format + "\n" +
+                  //       "cancelled: " + result.cancelled + "\n");
+                  //   document.getElementById("info").innerHTML = result.text;
+                  //   console.log(result);
+                    /*
+                    if (args.format == "QR_CODE") {
+                        window.plugins.childBrowser.showWebPage(args.text, { showLocationBar: false });
+                    }
+                    */
+
+                }, function (error) {
+                    console.log("Scanning failed: ", error);
+                } );
+
+
               }
+
           });
 
     </script>
+
+    <script type="text/javascript" src="js/index.js"></script>
+
 
   </body>
 </html>
