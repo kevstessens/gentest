@@ -138,4 +138,5 @@ i {
 canvas {
   border: solid 1px;
   display: block;
+  margin:auto;
 }
