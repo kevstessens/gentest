@@ -60,7 +60,7 @@
       </md-list-item>
 
       <md-list-item>
-          <md-button id="scan" class="">
+          <md-button ng-click="mainCtrl.scan()" class="">
            <div class="avatar"><i class="fa fa-barcode" style="font-size: 6em"></i></div>
             Escaner
           </md-button>
@@ -110,23 +110,35 @@
         <md-list-item ng-repeat="product in mainCtrl.products">
             <md-button ng-click="mainCtrl.showProduct(product)">
               <img ng-src="{{product.img}}" class="thumb">
-              {{product.name}}
+              <div class="product-list">{{product.name}}
+              <span class="product-list-qty">( {{product.qty}} X {{product.price}} )</span></div>
+              <span class="product-list-price">$ {{product.priceVal * product.qty}}</span></div>
             </md-button>
         </md-list-item>
+
       </md-list>
+
 
       <!-- Modal -->
       <div id="modal" class="modal modal__bg" role="dialog" aria-hidden="true">
         <div class="modal__dialog">
           <div class="modal__content">
-            <h1>{{mainCtrl.selected_product.name}}</h1>
-            <p>{{mainCtrl.selected_product.descrpition}}</p>
+            <h1 class="product-title">{{mainCtrl.selected_product.name}}</h1>
+            <div>
             <img ng-src="{{mainCtrl.selected_product.img}}">
+            <div class="price">
+                <p class="description-product">{{mainCtrl.selected_product.description}}</p>
+                <h1 class="price">{{mainCtrl.selected_product.price}}</h1>
+            </div>
+            </div>
+            <div style="height:30px;"><md-button ng-click="mainCtrl.addProduct(mainCtrl.selected_product)" style="float:right;">
+            Agregar al carrito
+          </md-button></div>
             <!-- modal close button -->
-            <a href="" class="modal__close demo-close" style="display: none;">
+
+            <a href="" class="modal__close demo-close" style="display: none;" id="modal-bt-close">
               <svg class="" viewBox="0 0 24 24"><path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/><path d="M0 0h24v24h-24z" fill="none"/></svg>
             </a>
-
           </div>
         </div>
       </div>
@@ -142,8 +154,29 @@
     <script type="text/javascript" src="barcodescanner.js"></script>
     <script type="text/javascript" src="components/signature_pad/signature_pad.min.js"></script>
     <script type="text/javascript" src="components/ng-signature-pad/dist/ng-signature-pad.min.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
 
+
+    <script type="text/javascript">
+    Array.prototype.contains = function(obj) {
+        var i = this.length;
+        while (i--) {
+            if (this[i].unix === obj.unix) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    Array.prototype.getIndexOfByUnix = function(obj) {
+        var i = this.length;
+        while (i--) {
+            if (this[i].unix === obj.unix) {
+                return i;
+            }
+        }
+        return null;
+    }
+    </script>
 
     <script type="text/javascript">
 
@@ -158,12 +191,20 @@
               {
                 name: '208.312 G - TV LED Sony 79 " 4K Ultra HD XBR79X905B',
                 unix: '208312',
-                img: 'http://genesis.garba.com.ar/sg/resource?sha=2391841c750665548651fbd20b6177c2fc5223c303a0258433934b8dc375c7a5&filename=208312_1.jpg'
+                img: 'http://genesis.garba.com.ar/sg/resource?sha=2391841c750665548651fbd20b6177c2fc5223c303a0258433934b8dc375c7a5&filename=208312_1.jpg',
+                qty: 1,
+                price:"$6.800",
+                priceVal:6800,
+                description: 'Pantalla. Diagonal: 79 ". Resolución de Video: 4K Ultra HD. Resolución: 3840x2160. Conectividad. HDMI: 4. USB: 2. Funciones Especiales. Smart TV. 3D. WiFi Dongle: Incorporado. Tipo de Anteojos 3D: Pasivo. Anteojos 3D incluídos: 4.'
               },
               {
                 name: '202.060-3 G - iMac 27 " ME088LE/A Intel Core i5',
                 unix: '517151',
-                img: 'http://genesis.garba.com.ar/sg/resource?sha=fead2224a393d975769ffc7917a2f7b68bf0246e8a5898694bf9cc3e3963f037&filename=202060.jpg'
+                img: 'http://genesis.garba.com.ar/sg/resource?sha=fead2224a393d975769ffc7917a2f7b68bf0246e8a5898694bf9cc3e3963f037&filename=202060.jpg',
+                qty: 1,
+                price:"$10.000",
+                priceVal:10000,
+                description: 'Tipo de Equipo: iMac. Marca CPU: Intel. Versión CPU: Core i5. Modelo CPU: ---. Velocidad CPU: 3.2 GHz. Memoria Ram: 8 GB. Procesador Gráfico: Nvidia Gforce GT. Sistema Operativo: Mac OS X. Capacidad Disco Rígido: 1TB. Color: Blanco. Pantalla. Tamaño de Pantalla: 27 ". Tipo de Pantalla: LED. Conectividad. Wi-Fi. Puerto Ethernet.'
               }
               ];
 
@@ -175,15 +216,74 @@
 
               self.downLoadImage = function(sig){
                 window.open(sig.toDataURL());
-              }
+              };
 
               self.showProduct = function(product){
                 self.selected_product = product;
                 document.getElementById('modal-btn').click();
+              };
+
+              self.addProduct = function(product){
+                if(self.products.contains(product)){
+                  self.products[self.products.getIndexOfByUnix(product)].qty = self.products[self.products.getIndexOfByUnix(product)].qty +1;
+                  document.getElementById('modal-bt-close').click();
+                }else{
+                  self.products.push(product);
+                  document.getElementById('modal-bt-close').click();
+                };
+              };
+              self.scan =function(){
+                console.log('scanning');
+
+                var scanner = cordova.require("cordova/plugin/BarcodeScanner");
+
+
+                scanner.scan( function (result) {
+
+
+                    if(result.text == "208312"){
+                      found =   {
+                        name: '208.312 G - TV LED Sony 79 " 4K Ultra HD XBR79X905B',
+                        unix: '208312',
+                        img: 'http://genesis.garba.com.ar/sg/resource?sha=2391841c750665548651fbd20b6177c2fc5223c303a0258433934b8dc375c7a5&filename=208312_1.jpg',
+                        qty: 1,
+                        price:"$6.800",
+                        priceVal:6800,
+                        description: 'Pantalla. Diagonal: 79 ". Resolución de Video: 4K Ultra HD. Resolución: 3840x2160. Conectividad. HDMI: 4. USB: 2. Funciones Especiales. Smart TV. 3D. WiFi Dongle: Incorporado. Tipo de Anteojos 3D: Pasivo. Anteojos 3D incluídos: 4.'
+                        };
+                      self.showProduct(found);
+                    };
+
+                    if(result.text == "517151"){
+                      found =   {
+                        name: '202.060-3 G - iMac 27 " ME088LE/A Intel Core i5',
+                        unix: '517151',
+                        img: 'http://genesis.garba.com.ar/sg/resource?sha=fead2224a393d975769ffc7917a2f7b68bf0246e8a5898694bf9cc3e3963f037&filename=202060.jpg',
+                        qty: 1,
+                        price:"$10.000",
+                        priceVal:10000,
+                        description: 'Tipo de Equipo: iMac. Marca CPU: Intel. Versión CPU: Core i5. Modelo CPU: ---. Velocidad CPU: 3.2 GHz. Memoria Ram: 8 GB. Procesador Gráfico: Nvidia Gforce GT. Sistema Operativo: Mac OS X. Capacidad Disco Rígido: 1TB. Color: Blanco. Pantalla. Tamaño de Pantalla: 27 ". Tipo de Pantalla: LED. Conectividad. Wi-Fi. Puerto Ethernet.'
+                      };
+                        self.showProduct(found);
+                    };
+                    document.getElementById("cart").setAttribute('class', 'selected md-button md-default-theme');
+                    document.getElementById("signature").setAttribute('class', 'md-button md-default-theme');
+                    document.getElementById("cart_content").setAttribute('style', 'display:block;');
+                    document.getElementById("signature_content").setAttribute('style', 'display:none;');
+
+                }, function (error) {
+                    console.log("Scanning failed: ", error);
+                } );
+
+
               }
+
           });
 
     </script>
+
+    <script type="text/javascript" src="js/index.js"></script>
+
 
   </body>
 </html>

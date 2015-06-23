@@ -81,14 +81,12 @@ var app = {
     //     } );
     // },
     openSignature: function() {
-      document.getElementById("scan").setAttribute('class', 'md-button md-default-theme');
       document.getElementById("cart").setAttribute('class', 'md-button md-default-theme');
       document.getElementById("signature").setAttribute('class', 'selected md-button md-default-theme');
        document.getElementById("cart_content").setAttribute('style', 'display:none;');
      document.getElementById("signature_content").setAttribute('style', 'display:block;');
    },
    openCart: function() {
-     document.getElementById("scan").setAttribute('class', 'md-button md-default-theme');
      document.getElementById("cart").setAttribute('class', 'selected md-button md-default-theme');
      document.getElementById("signature").setAttribute('class', 'md-button md-default-theme');
      document.getElementById("cart_content").setAttribute('style', 'display:block;');
