@@ -107,7 +107,7 @@
 
 
     <md-content flex id="final_content" style="display: none;">
-      <h1 style="margin-top:15px;font-size: 65px;color: rgb(182, 6, 14);font-weight: bold;">¡Gracias por su compra!</h1>
+      <h1 style="margin-top:15px;font-size: 65px;color: rgb(182, 6, 14); font-weight: bold;">¡Gracias por su compra!</h1>
       <img ng-src="img/garbarino.png" style="width:100%;">
       <md-button ng-click="mainCtrl.goToCart()" style="float:right;margin-bottom:10px; margin-top:20px; margin-right:40%; font-size:25px;">
         Nueva operación
@@ -130,10 +130,11 @@
             </md-button>
         </md-list-item>
       </md-list>
-      <md-button ng-click="mainCtrl.goToSign()" style="float:right;margin-bottom:10px;">
+      <md-button ng-click="mainCtrl.goToSign()" ng-hide='mainCtrl.total === 0'  style="float:right;margin-bottom:10px;">
         Finalizar compra por un Total de ${{mainCtrl.total}}
         </md-button>
 
+        <h1 ng-hide='mainCtrl.total > 0'>Escanee productos para agregarlos al carrito</h1>
         <h2 style="float:right; margin-right:10px;"></h2>
 </div>
 
