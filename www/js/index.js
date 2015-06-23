@@ -83,7 +83,8 @@ var app = {
     openSignature: function() {
       document.getElementById("cart").setAttribute('class', 'md-button md-default-theme');
       document.getElementById("signature").setAttribute('class', 'selected md-button md-default-theme');
-       document.getElementById("cart_content").setAttribute('style', 'display:none;');
+      document.getElementById("final_content").setAttribute('style', 'display:none;');
+      document.getElementById("cart_content").setAttribute('style', 'display:none;');
      document.getElementById("signature_content").setAttribute('style', 'display:block;');
    },
    openCart: function() {
@@ -91,6 +92,8 @@ var app = {
      document.getElementById("signature").setAttribute('class', 'md-button md-default-theme');
      document.getElementById("cart_content").setAttribute('style', 'display:block;');
    document.getElementById("signature_content").setAttribute('style', 'display:none;');
+   document.getElementById("final_content").setAttribute('style', 'display:none;');
+
  }
 
 };
